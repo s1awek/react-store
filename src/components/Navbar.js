@@ -1,16 +1,41 @@
-import React from 'react'
-import styled from 'styled-components'
-import logo from '../assets/logo.svg'
-import { FaBars } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
-import { links } from '../utils/constants'
-import CartButtons from './CartButtons'
-import { useProductsContext } from '../context/products_context'
-import { useUserContext } from '../context/user_context'
+/** @format */
+
+import React from 'react';
+import styled from 'styled-components';
+import logo from '../assets/logo.svg';
+import { FaBars } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import { links } from '../utils/constants';
+import CartButtons from './CartButtons';
+import { useProductsContext } from '../context/products_context';
+import { useUserContext } from '../context/user_context';
 
 const Nav = () => {
-  return <h4>navbar</h4>
-}
+  return (
+    <NavContainer>
+      <div className='nav-center'>
+        <div className='nav-header'>
+          <Link to='/'>
+            <img src={logo} alt='logo' />
+          </Link>
+          <button className='nav-toggle' type='button'>
+            <FaBars />
+          </button>
+        </div>
+        <ul className='nav-links'>
+          {links.map((item) => {
+            return (
+              <li key={item.id}>
+                <Link to={item.url}>{item.text}</Link>
+              </li>
+            );
+          })}
+        </ul>
+        <CartButtons />
+      </div>
+    </NavContainer>
+  );
+};
 
 const NavContainer = styled.nav`
   height: 5rem;
@@ -68,6 +93,8 @@ const NavContainer = styled.nav`
         text-transform: capitalize;
         letter-spacing: var(--spacing);
         padding: 0.5rem;
+        border-bottom: 2px solid transparent;
+        transition: 0.2s border ease-in-out;
         &:hover {
           border-bottom: 2px solid var(--clr-primary-7);
         }
@@ -77,6 +104,6 @@ const NavContainer = styled.nav`
       display: grid;
     }
   }
-`
+`;
 
-export default Nav
+export default Nav;
