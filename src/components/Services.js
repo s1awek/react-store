@@ -1,15 +1,50 @@
-import React from 'react'
-import styled from 'styled-components'
-import { services } from '../utils/constants'
+/** @format */
+
+import React from 'react';
+import styled from 'styled-components';
+import { services } from '../utils/constants';
 
 const Services = () => {
-  return <h4>services </h4>
-}
+  return (
+    <Wrapper>
+      <div className='section-center'>
+        <article className='header'>
+          <h3>
+            <span>custom furniture</span>
+            <span>built only for you</span>
+          </h3>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente consectetur vero nulla, eum, sint dolor magnam distinctio iste corrupti ipsa nesciunt nisi similique
+            dolores, excepturi ut? Ullam excepturi eos vel?
+          </p>
+        </article>
+        <div className='services-center'>
+          {services.map((item) => {
+            const { id, icon, title, text } = item;
+            return (
+              <article key={id} className='service'>
+                <span className='icon'>{icon}</span>
+                <h4>{title}</h4>
+                <p>{text}</p>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </Wrapper>
+  );
+};
 
 const Wrapper = styled.section`
   h3,
   h4 {
     color: var(--clr-primary-1);
+  }
+  h3 {
+    span {
+      display: block;
+      width: 100%;
+    }
   }
   padding: 5rem 0;
 
@@ -37,7 +72,7 @@ const Wrapper = styled.section`
       color: var(--clr-primary-2);
     }
   }
-  span {
+  .icon {
     width: 4rem;
     height: 4rem;
     display: grid;
@@ -68,5 +103,5 @@ const Wrapper = styled.section`
       transform: translateY(5rem);
     }
   }
-`
-export default Services
+`;
+export default Services;
