@@ -43,7 +43,6 @@ export const ProductsProvider = ({ children }) => {
     } catch (error) {
       dispatch({ type: GET_PRODUCTS_ERROR, payload: error });
     }
-    //console.log(response.data);
   };
 
   useEffect(() => {

@@ -1,19 +1,38 @@
-import React from 'react'
-import styled from 'styled-components'
-import { formatPrice } from '../utils/helpers'
-import { FaSearch } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
+/** @format */
 
-const Product = () => {
-  return <h4>product</h4>
-}
+import React from 'react';
+import styled from 'styled-components';
+import { formatPrice } from '../utils/helpers';
+import { FaExternalLinkAlt } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+
+const Product = ({ image, name, price, id }) => {
+  return (
+    <Wrapper>
+      <div className='container'>
+        <Link className='link' to={`products/${id}`}>
+          <img src={image} alt={name} />
+          <div className='icon-wrap'>
+            <FaExternalLinkAlt />
+          </div>
+        </Link>
+      </div>
+      <footer>
+        <h5>{name}</h5>
+        <p>{formatPrice(price)}</p>
+      </footer>
+    </Wrapper>
+  );
+};
 
 const Wrapper = styled.article`
   .container {
     position: relative;
-    background: var(--clr-black);
     border-radius: var(--radius);
+    height: 225px;
+    overflow: hidden;
   }
+
   img {
     width: 100%;
     display: block;
@@ -23,29 +42,45 @@ const Wrapper = styled.article`
   }
   .link {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: var(--clr-primary-5);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    background: var(--clr-black);
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
     transition: var(--transition);
-    opacity: 0;
     cursor: pointer;
+    display: block;
     svg {
       font-size: 1.25rem;
       color: var(--clr-white);
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+    .icon-wrap {
+      width: 50px;
+      height: 50px;
+      border-radius: 100px;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      top: calc(50% - 50px / 2);
+      left: calc(50% - 50px / 2);
+      position: absolute;
+      background: var(--clr-primary-5);
+      opacity: 0;
+      transition: var(--transition);
     }
   }
   .container:hover img {
     opacity: 0.5;
   }
   .container:hover .link {
-    opacity: 1;
+    .icon-wrap {
+      opacity: 1;
+    }
   }
   footer {
     margin-top: 1rem;
@@ -63,5 +98,5 @@ const Wrapper = styled.article`
     color: var(--clr-primary-5);
     letter-spacing: var(--spacing);
   }
-`
-export default Product
+`;
+export default Product;
