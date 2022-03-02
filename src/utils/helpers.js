@@ -8,3 +8,9 @@ export const formatPrice = (number) => {
 };
 
 export const getUniqueValues = () => {};
+
+export const convertHex = (hex) => {
+  if (hex.length > 4) return hex;
+  const justNumber = hex.slice(1);
+  return `#${justNumber}${justNumber}`;
+};
