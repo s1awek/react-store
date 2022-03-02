@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { FaCheck } from 'react-icons/fa';
+import { FaCheck, FaShoppingCart } from 'react-icons/fa';
 import { useCartContext } from '../context/cart_context';
 import AmountButtons from './AmountButtons';
 import { convertHex } from '../utils/helpers';
@@ -58,7 +58,8 @@ const AddToCart = ({ product }) => {
       <div className='btn-container'>
         <AmountButtons amount={amount} increase={increase} decrease={decrease} />
         <Link to='/cart' className='btn'>
-          Add to cart
+          <FaShoppingCart />
+          <span>Add to cart</span>
         </Link>
       </div>
     </Wrapper>
@@ -113,7 +114,13 @@ const Wrapper = styled.section`
 
   .btn {
     margin-top: 1rem;
-    width: 140px;
+    width: auto;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    svg {
+      margin-right: 0.5rem;
+    }
   }
 `;
 export default AddToCart;
