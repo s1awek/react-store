@@ -3,7 +3,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useFilterContext } from '../context/filter_context';
-import { getUniqueValues, formatPrice } from '../utils/helpers';
+import { getUniqueValues, formatPrice, convertHex } from '../utils/helpers';
 import { FaCheck } from 'react-icons/fa';
 
 const Filters = () => {
@@ -36,7 +36,13 @@ const Filters = () => {
               {categories.map((item, index) => {
                 //console.log({ item, category });
                 return (
-                  <button name='category' value={item} className={`${category.toLowerCase() === item.toLowerCase() ? 'active' : null}`} onClick={updateFilters} key={index}>
+                  <button
+                    name='category'
+                    data-category={item}
+                    className={`${category.toLowerCase() === item.toLowerCase() ? 'active' : ''} ${item === 'all' ? 'all-btn' : ''}`}
+                    onClick={updateFilters}
+                    key={index}
+                  >
                     {item}
                   </button>
                 );
@@ -44,6 +50,51 @@ const Filters = () => {
             </div>
           </div>
           {/* end categories */}
+          {/* companies */}
+          <div className='form-control'>
+            <h5>company</h5>
+            <select onChange={updateFilters} value={company} name='company' id='company' className='company'>
+              {companies.map((item, index) => {
+                return (
+                  <option value={item} key={index}>
+                    {item}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          {/* end companies */}
+          {/* colors */}
+          <div className='form-control'>
+            <h5>colors</h5>
+            <div className='colors'>
+              {colors.map((item, index) => {
+                //console.log({ item, color });
+                return (
+                  <button
+                    onClick={updateFilters}
+                    style={{ backgroundColor: item, color: `${convertHex(item)}60` }}
+                    key={index}
+                    name='color'
+                    data-color={item}
+                    className={`${item === 'all' ? 'all-btn' : 'color-btn'} ${item === color ? 'active' : ''}`}
+                  >
+                    {item === 'all' ? 'all' : <FaCheck />}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+          {/* end colors */}
+          {/* price */}
+          <div className='form-control'>
+            <h5>price</h5>
+            <p className='price'>{formatPrice(price)}</p>
+            <input type='range' name='price' onChange={updateFilters} min={min_price} max={max_price} step={1000} value={`${price ? price : 0}`} />
+          </div>
+          {/* end price */}
+          {/* shipping */}
+          {/* end shipping */}
         </form>
       </div>
     </Wrapper>
@@ -102,13 +153,24 @@ const Wrapper = styled.section`
     margin-right: 0.5rem;
     border: none;
     cursor: pointer;
-    opacity: 0.5;
     display: flex;
     align-items: center;
     justify-content: center;
     svg {
       font-size: 0.5rem;
       color: var(--clr-white);
+      opacity: 0;
+      transition: var(--transition);
+      pointer-events: none;
+    }
+  }
+  .colors {
+    .active {
+      box-shadow: 0px 0px 0px 3px;
+      transition: var(--transition);
+      svg {
+        opacity: 1;
+      }
     }
   }
   .all-btn {
@@ -116,10 +178,9 @@ const Wrapper = styled.section`
     align-items: center;
     justify-content: center;
     margin-right: 0.5rem;
-    opacity: 0.5;
-  }
-  .active {
-    opacity: 1;
+    &.active {
+      box-shadow: none;
+    }
   }
   .all-btn .active {
     text-decoration: underline;
