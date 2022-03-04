@@ -58,22 +58,36 @@ const filter_reducer = (state, action) => {
   if (action.type === FILTER_PRODUCTS) {
     const {
       all_products,
-      filters: { text, company, category, color, shipping },
+      filters: { text, company, category, color, price, shipping },
     } = state;
     let tempProducts = [...all_products];
 
     if (text.length) {
-      tempProducts = all_products.filter((item) => {
-        return item.name.toLowerCase().startsWith(text.toLowerCase());
-      });
-    }
-    if (category.length && category !== 'all') {
-      tempProducts = all_products.filter((item) => {
-        return item.category === category;
+      tempProducts = tempProducts.filter((item) => {
+        return item.name.toLowerCase().startsWith(text.toLowerCase().trim());
       });
     }
 
+    if (category !== 'all') {
+      tempProducts = tempProducts.filter((item) => item.category.toLowerCase() === category.toLowerCase());
+    }
+    if (company !== 'all') {
+      tempProducts = tempProducts.filter((item) => item.company.toLowerCase() === company.toLowerCase());
+    }
+    if (color !== 'all') {
+      tempProducts = tempProducts.filter((item) => item.colors.some((some) => some === color));
+    }
+    if (shipping) {
+      tempProducts = tempProducts.filter((item) => item.shipping);
+    }
+
+    tempProducts = tempProducts.filter((item) => item.price <= price);
+
     return { ...state, filtered_products: tempProducts };
+  }
+  if (action.type === CLEAR_FILTERS) {
+    action.payload.price = state.filters.max_price;
+    return { ...state, filters: { ...state.filters, ...action.payload } };
   }
   throw new Error(`No Matching "${action.type}" - action type`);
 };

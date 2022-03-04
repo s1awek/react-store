@@ -49,12 +49,17 @@ export const FilterProvider = ({ children }) => {
     if (name === 'price') {
       value = Number(value);
     }
+    if (name === 'shipping') {
+      value = e.target.checked;
+    }
     //console.log({ name, value });
     dispatch({ type: UPDATE_FILTERS, payload: { name, value } });
   };
 
-  const clearFilter = () => {};
-  return <FilterContext.Provider value={{ ...state, setGrid, setList, updateSort, updateFilters, clearFilter }}>{children}</FilterContext.Provider>;
+  const clearFilters = () => {
+    dispatch({ type: CLEAR_FILTERS, payload: { text: '', company: 'all', category: 'all', color: 'all', shipping: false } });
+  };
+  return <FilterContext.Provider value={{ ...state, setGrid, setList, updateSort, updateFilters, clearFilters }}>{children}</FilterContext.Provider>;
 };
 // make sure use
 export const useFilterContext = () => {
