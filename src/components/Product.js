@@ -10,7 +10,7 @@ const Product = ({ image, name, price, id }) => {
   return (
     <Wrapper>
       <div className='container'>
-        <Link className='link' to={`products/${id}`}>
+        <Link className='link' to={`/products/${id}`}>
           <img src={image} alt={name} />
           <div className='icon-wrap'>
             <FaExternalLinkAlt />

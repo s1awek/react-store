@@ -11,12 +11,14 @@ import { UserProvider } from './context/user_context';
 import { Auth0Provider } from '@auth0/auth0-react';
 
 ReactDOM.render(
-  <ProductsProvider>
-    <FilterProvider>
-      <CartProvider>
-        <App />
-      </CartProvider>
-    </FilterProvider>
-  </ProductsProvider>,
+  <React.StrictMode>
+    <ProductsProvider>
+      <FilterProvider>
+        <CartProvider>
+          <App />
+        </CartProvider>
+      </FilterProvider>
+    </ProductsProvider>
+  </React.StrictMode>,
   document.getElementById('root')
 );
