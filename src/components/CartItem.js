@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { formatPrice } from '../utils/helpers';
 import AmountButtons from './AmountButtons';
 import { FaTrash } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import { useCartContext } from '../context/cart_context';
 const CartItem = ({ id, image, name, color, price, amount }) => {
   const { removeItem, toggleAmount } = useCartContext();
@@ -17,7 +18,9 @@ const CartItem = ({ id, image, name, color, price, amount }) => {
   return (
     <Wrapper>
       <div className='title'>
-        <img src={image} alt={name} />
+        <Link to={`/products/${id}`}>
+          <img src={image} alt={name} />
+        </Link>
         <div>
           <h5 className='name'>{name}</h5>
           <p className='color'>
@@ -62,13 +65,25 @@ const Wrapper = styled.article`
     align-items: center;
     text-align: left;
     gap: 1rem;
+    a {
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      border-radius: var(--radius);
+      &:hover {
+        img {
+          transform: scale(1.05);
+        }
+      }
+    }
   }
   img {
     width: 100%;
     height: 100%;
     display: block;
-    border-radius: var(--radius);
     object-fit: cover;
+    transition: var(--transition);
   }
   h5 {
     font-size: 0.75rem;

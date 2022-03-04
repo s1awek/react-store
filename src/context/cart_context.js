@@ -31,11 +31,15 @@ export const CartProvider = ({ children }) => {
   const toggleAmount = (id, value) => {
     dispatch({ type: TOGGLE_CART_ITEM_AMOUNT, payload: { id, value } });
   };
-  const countTotals = () => {};
+  const countTotals = () => {
+    dispatch({ type: COUNT_CART_TOTALS });
+  };
 
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(state.cart));
+    countTotals();
   }, [state.cart]);
+
   return <CartContext.Provider value={{ ...state, addToCart, removeItem, toggleAmount, clearCart }}>{children}</CartContext.Provider>;
 };
 // make sure use
