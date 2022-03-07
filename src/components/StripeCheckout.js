@@ -56,11 +56,56 @@ const CheckoutForm = () => {
     createPaymentIntent();
   }, []);
 
-  const handleChange = async (event) => {};
+  const handleChange = async (event) => {
+    setDisabled(event.empty);
+    setError(event.error ? event.error.message : '');
+  };
 
-  const handleSubmit = async (ev) => {};
+  const handleSubmit = async (ev) => {
+    ev.preventDefault();
+    setProcessing(true);
+    const payload = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: elements.getElement(CardElement),
+      },
+    });
+    if (payload.error) {
+      setError(`Payment failed: ${payload.error.message}`);
+      setProcessing(false);
+    } else {
+      setError(null);
+      setProcessing(false);
+      setSucceeded(true);
+
+      setTimeout(() => {
+        clearCart();
+        navigate('/');
+      }, 10000);
+    }
+  };
   return (
     <div>
+      {succeeded ? (
+        <article>
+          <h4>Thank you</h4>
+          <h4>Your payment was successful!</h4>
+          <h4>Redirecting to Home Page shortly</h4>
+        </article>
+      ) : (
+        <article>
+          <h4>Hello, {myUser && myUser.name}</h4>
+          <p>
+            Your total is <strong>{formatPrice(shipping_fee + total_amount)}</strong>
+          </p>
+          <p>
+            This payment is made for testing purposes only. <strong>DO NOT ENTER</strong> your real card details!
+          </p>
+          <p>
+            Test Card Number: <strong>4242 4242 4242 4242</strong>
+          </p>
+          <p>Provide any date in the future and any 3-digits CVC code. For ZIP provide random 5 digits.</p>
+        </article>
+      )}
       <form onSubmit={handleSubmit} id='payment-form'>
         <CardElement id='card-element' options={cardStyle} onChange={handleChange} />
         <button disabled={processing || disabled || succeeded}>
@@ -68,7 +113,7 @@ const CheckoutForm = () => {
         </button>
         {error && (
           <div className='card-error' role='alert'>
-            {error}
+            <span className='error'>{error}</span>
           </div>
         )}
 
@@ -93,7 +138,8 @@ const StripeCheckout = () => {
 
 const Wrapper = styled.section`
   form {
-    width: 30vw;
+    width: 100%;
+    max-width: 550px;
     align-self: center;
     box-shadow: 0px 0px 0px 0.5px rgba(50, 50, 93, 0.1), 0px 2px 5px 0px rgba(50, 50, 93, 0.1), 0px 1px 1.5px 0px rgba(0, 0, 0, 0.07);
     border-radius: 7px;
@@ -140,6 +186,9 @@ const Wrapper = styled.section`
   }
   #payment-request-button {
     margin-bottom: 32px;
+  }
+  .error {
+    color: red;
   }
   /* Buttons and links */
   button {
