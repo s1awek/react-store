@@ -1,8 +1,8 @@
 /** @format */
 
 // domain/.netlify/functions/create-payment-intent
-dotenv = require('dotenv').config();
-const stripe = require('stripe')(dotenv.parsed.REACT_APP_STRIPE_SECRET_KEY);
+require('dotenv').config();
+const stripe = require('stripe')(process.env.REACT_APP_STRIPE_SECRET_KEY);
 exports.handler = async function (event, context) {
   if (event.body) {
     const { shipping_fee, total_amount } = JSON.parse(event.body);
